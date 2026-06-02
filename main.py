@@ -1,5 +1,6 @@
 from job_search import search_jobs
-from database import get_job_by_id
+from database import get_job_by_id, save_job
+
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -137,6 +138,39 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
+async def save(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    if not context.args:
+        await update.message.reply_text(
+            "Usage: /save 1"
+        )
+        return
+
+    try:
+        job_id = int(context.args[0])
+
+        job = get_job_by_id(job_id)
+
+        if not job:
+            await update.message.reply_text(
+                "Job not found."
+            )
+            return
+
+        save_job(
+            update.effective_user.id,
+            job_id
+        )
+
+        await update.message.reply_text(
+            f"✅ Saved job #{job_id}"
+        )
+
+    except ValueError:
+        await update.message.reply_text(
+            "Please provide a valid job number."
+        )
+
 app = Application.builder().token(
     TELEGRAM_TOKEN
 ).build()
@@ -144,6 +178,7 @@ app = Application.builder().token(
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("jobs", jobs))
 app.add_handler(CommandHandler("details", details))
+app.add_handler(CommandHandler("save", save))
 
 app.add_handler(
     MessageHandler(
