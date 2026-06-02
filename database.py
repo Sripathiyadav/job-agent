@@ -40,7 +40,7 @@ def init_db():
     conn.close()
 
     print("Database initialized")
-    
+
 def add_job(title, company, location, url, source):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -71,6 +71,25 @@ def get_jobs():
     conn.close()
 
     return jobs
+
+def get_job_by_id(job_id):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, title, company, location, url, source
+        FROM jobs
+        WHERE id = ?
+    """, (job_id,))
+
+    job = cursor.fetchone()
+
+    conn.close()
+
+    return job
+
+
+
 
 if __name__ == "__main__":
     init_db()
