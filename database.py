@@ -101,6 +101,25 @@ def save_job(telegram_user_id, job_id):
     conn.commit()
     conn.close()
 
+def get_saved_jobs(telegram_user_id):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT jobs.id,
+               jobs.title,
+               jobs.location
+        FROM saved_jobs
+        JOIN jobs
+        ON saved_jobs.job_id = jobs.id
+        WHERE saved_jobs.telegram_user_id = ?
+    """, (telegram_user_id,))
+
+    jobs = cursor.fetchall()
+
+    conn.close()
+
+    return jobs
 
 if __name__ == "__main__":
     init_db()

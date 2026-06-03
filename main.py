@@ -10,6 +10,12 @@ from telegram.ext import (
     filters,
 )
 
+from database import (
+    get_job_by_id,
+    save_job,
+    get_saved_jobs
+)
+
 import requests
 from config import TELEGRAM_TOKEN
 
@@ -171,6 +177,29 @@ async def save(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Please provide a valid job number."
         )
 
+
+async def saved(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    jobs = get_saved_jobs(
+        update.effective_user.id
+    )
+
+    if not jobs:
+        await update.message.reply_text(
+            "No saved jobs."
+        )
+        return
+
+    message = "📌 Saved Jobs\n\n"
+
+    for job in jobs:
+        message += (
+            f"{job[0]}. {job[1]} - {job[2]}\n"
+        )
+
+    await update.message.reply_text(message)
+
+
 app = Application.builder().token(
     TELEGRAM_TOKEN
 ).build()
@@ -179,6 +208,8 @@ app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("jobs", jobs))
 app.add_handler(CommandHandler("details", details))
 app.add_handler(CommandHandler("save", save))
+app.add_handler(CommandHandler("saved", saved))
+
 
 app.add_handler(
     MessageHandler(
