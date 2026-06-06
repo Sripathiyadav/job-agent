@@ -2,6 +2,17 @@ from job_search import search_jobs
 
 jobs = search_jobs("flutter")
 
+print(f"\nFound {len(jobs)} jobs\n")
+
 for job in jobs:
-    print(job["title"], "-", job["location"])
-    
+
+    print(
+        f"{job['title']} | "
+        f"{job['company']} | "
+        f"{job['location']} | "
+        f"{job['source']}"
+    )
+
+    print(job["url"])
+
+    print("-" * 80)
