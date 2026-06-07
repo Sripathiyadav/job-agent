@@ -114,7 +114,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = requests.post(
             "http://localhost:11434/api/chat",
             json={
-                "model": "qwen2.5:1.5b",
+                "model": "llama3.2:latest",
                 "messages": recent_messages,
                 "stream": False
             },

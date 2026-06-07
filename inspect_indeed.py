@@ -1,10 +1,10 @@
-# inspect_input.py
-
 from apify_client import ApifyClient
 from config import APIFY_TOKEN
 
 client = ApifyClient(APIFY_TOKEN)
 
-actor = client.actor("vw0F1amycaxZgyXFq")
+actors = client.actors().list()
 
-print(actor.get().example_run_input)
+for actor in actors.items:
+    print(actor.name)
+    

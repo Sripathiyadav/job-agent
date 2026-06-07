@@ -1,10 +1,10 @@
-# inspect_input.py
+# inspect_indeed_actor.py
 
 from apify_client import ApifyClient
 from config import APIFY_TOKEN
 
 client = ApifyClient(APIFY_TOKEN)
 
-actor = client.actor("vw0F1amycaxZgyXFq")
+actor = client.actor("indeed-scraper")
 
-print(actor.get().example_run_input)
+print(actor.get())

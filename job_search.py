@@ -1,9 +1,7 @@
 from database import add_job
 
 from sources.linkedin import search_linkedin
-from sources.indeed import search_indeed
-
-# from sources.stepstone import search_stepstone
+from sources.stepstone import search_stepstone
 
 
 def search_jobs(query):
@@ -12,10 +10,10 @@ def search_jobs(query):
 
     try:
         jobs.extend(
-            search_indeed(query)
+            search_stepstone(query)
         )
     except Exception as e:
-        print("Indeed error:", e)
+        print("Stepstone error:", e)
 
     try:
         jobs.extend(
@@ -23,15 +21,6 @@ def search_jobs(query):
         )
     except Exception as e:
         print("LinkedIn error:", e)
-
-    # Enable later when Stepstone works
-    #
-    # try:
-    #     jobs.extend(
-    #         search_stepstone(query)
-    #     )
-    # except Exception as e:
-    #     print("Stepstone error:", e)
 
     for job in jobs:
 
